@@ -1,6 +1,6 @@
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { cloudinary } from "../utils/cloudinary.js";
+import { cloudinary } from "../utils/Cloudinary.js";
 
 // Configure storage to handle both images and videos
 const storage = new CloudinaryStorage({
