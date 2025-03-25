@@ -12,18 +12,7 @@ dotenv.config({
   path: "./.env",
 });
 
-const port = process.env.PORT;
-
-connectDB()
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`server is listen at port :: http://localhost:${port}`);
-    });
-  })
-  .catch(() => {
-    console.log("MONGO db connection failed !", err);
-  });
-
+const port = process.env.PORT || 5000;
 const __dirname = path.resolve();
 
 const app = express();
@@ -32,17 +21,20 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
+// API Routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
+// Serve frontend from the correct directory
+app.use(express.static(path.join(__dirname, "..", "frontend-new", "dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "frontend-new", "dist", "index.html"));
 });
 
+// Global Error Handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -52,5 +44,16 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+// Connect to Database & Start Server
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running at: http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log("MongoDB connection failed!", err);
+  });
 
 export default app;
