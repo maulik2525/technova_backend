@@ -14,9 +14,11 @@ dotenv.config({
 const port = process.env.PORT || 5000;
 const app = express();
 
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+// app.use(express.json({ limit: "16kb" }));
+// app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
+app.use(express.json()); // Required for parsing JSON body
+
 
 // API Routes
 app.use("/api/user", userRoutes);

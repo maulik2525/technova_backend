@@ -10,7 +10,7 @@ export const createPost = async (req, res, next) => {
     if (!req.body.title || !req.body.content) {
       return next(errorHandler(400, "Please provide all required fields"));
     }
-
+    console.log(req.body);
     // Generate slug
     const slug = req.body.title
       .trim()
