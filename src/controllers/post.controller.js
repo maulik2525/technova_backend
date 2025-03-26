@@ -1,34 +1,29 @@
 import Post from "../models/post.model.js";
-// import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 import { errorHandler } from "../utils/error.js";
 
-import path from "path"; // Import path for file extension extraction
+import path from "path"; 
 
 export const createPost = async (req, res, next) => {
   try {
-    // Validate required fields
     if (!req.body.title || !req.body.content) {
       return next(errorHandler(400, "Please provide all required fields"));
     }
     console.log(req.body);
-    // Generate slug
     const slug = req.body.title
       .trim()
       .toLowerCase()
-      .replace(/\s+/g, "-") // Replace spaces with dashes
-      .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
 
-    // Cloudinary or Multer file URL
     const blogPostUrl = req.file?.path || "";
     const mediaType = blogPostUrl ? path.extname(blogPostUrl).toLowerCase() : "";
 
-    // Create new post
     const newPost = new Post({
       ...req.body,
       slug,
       userId: req.user.id,
       image: blogPostUrl,
-      mediaType, // Store extracted file type
+      mediaType, 
     });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
@@ -45,7 +40,6 @@ export const getposts = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.order === "asc" ? 1 : -1;
     const posts = await Post.find({
-      // ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.category && { category: req.query.category }),
       ...(req.query.slug && { slug: req.query.slug }),
       ...(req.query.postId && { _id: req.query.postId }),

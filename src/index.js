@@ -14,19 +14,14 @@ dotenv.config({
 const port = process.env.PORT || 5000;
 const app = express();
 
-// app.use(express.json({ limit: "16kb" }));
-// app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
-app.use(express.json()); // Required for parsing JSON body
+app.use(express.json()); 
 
-
-// API Routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -37,7 +32,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to Database & Start Server
 connectDB()
   .then(() => {
     app.listen(port, () => {

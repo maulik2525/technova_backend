@@ -36,13 +36,6 @@ export const updateUser = async (req, res, next) => {
     }
   }
 
-  // const localUserProfileFile = req.body?.path;
-  // let userProfileImageUrl = "";
-  // if (localUserProfileFile) {
-  //   const profilePicture = await uploadOnCloudinary(localUserProfileFile);
-  //   console.log("profilePicture", profilePicture);
-  //   userProfileImageUrl = profilePicture.url;
-  // }
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
