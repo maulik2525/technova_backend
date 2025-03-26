@@ -1,4 +1,6 @@
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "cloudinary";
+const { v2 } = cloudinary;
+
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
